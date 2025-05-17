@@ -1,0 +1,902 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local player = Players.LocalPlayer
+local camera = game.Workspace.CurrentCamera
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = player:WaitForChild("PlayerGui")
+screenGui.Name = "CheatGui"
+screenGui.ResetOnSpawn = false
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 400, 0, 550)
+frame.Position = UDim2.new(0.5, -200, 0.5, -275)
+frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+frame.BackgroundTransparency = 0.4
+frame.BorderSizePixel = 0
+frame.Parent = screenGui
+
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 12)
+corner.Parent = frame
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 50)
+title.Position = UDim2.new(0, 0, 0, 10)
+title.BackgroundTransparency = 1
+title.Text = "Neon Cheat GUI"
+title.TextColor3 = Color3.fromRGB(0, 255, 255)
+title.TextSize = 26
+title.Font = Enum.Font.SourceSansBold
+title.TextStrokeTransparency = 0.8
+title.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+title.Parent = frame
+
+local closeButton = Instance.new("TextButton")
+closeButton.Size = UDim2.new(0, 30, 0, 30)
+closeButton.Position = UDim2.new(1, -40, 0, 10)
+closeButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+closeButton.Text = "X"
+closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeButton.TextSize = 18
+closeButton.Font = Enum.Font.SourceSansBold
+closeButton.Parent = frame
+
+local closeCorner = Instance.new("UICorner")
+closeCorner.CornerRadius = UDim.new(0, 8)
+closeCorner.Parent = closeButton
+
+local minimizeButton = Instance.new("TextButton")
+minimizeButton.Size = UDim2.new(0, 30, 0, 30)
+minimizeButton.Position = UDim2.new(1, -80, 0, 10)
+minimizeButton.BackgroundColor3 = Color3.fromRGB(255, 165, 0)
+minimizeButton.Text = "-"
+minimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+minimizeButton.TextSize = 18
+minimizeButton.Font = Enum.Font.SourceSansBold
+minimizeButton.Parent = frame
+
+local minimizeCorner = Instance.new("UICorner")
+minimizeCorner.CornerRadius = UDim.new(0, 8)
+minimizeCorner.Parent = minimizeButton
+
+local openButton = Instance.new("TextButton")
+openButton.Size = UDim2.new(0, 50, 0, 50)
+openButton.Position = UDim2.new(0, 10, 0, 10)
+openButton.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+openButton.Text = "Open"
+openButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+openButton.TextSize = 18
+openButton.Font = Enum.Font.SourceSansBold
+openButton.Parent = screenGui
+openButton.Visible = false
+
+local openCorner = Instance.new("UICorner")
+openCorner.CornerRadius = UDim.new(0, 8)
+openCorner.Parent = openButton
+
+local tabsFrame = Instance.new("Frame")
+tabsFrame.Size = UDim2.new(1, -20, 0, 40)
+tabsFrame.Position = UDim2.new(0, 10, 0, 60)
+tabsFrame.BackgroundTransparency = 1
+tabsFrame.Parent = frame
+
+local aimTabButton = Instance.new("TextButton")
+aimTabButton.Size = UDim2.new(0.25, -5, 1, 0)
+aimTabButton.Position = UDim2.new(0, 0, 0, 0)
+aimTabButton.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+aimTabButton.Text = "Аим"
+aimTabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+aimTabButton.TextSize = 18
+aimTabButton.Font = Enum.Font.SourceSans
+aimTabButton.Parent = tabsFrame
+
+local aimTabCorner = Instance.new("UICorner")
+aimTabCorner.CornerRadius = UDim.new(0, 6)
+aimTabCorner.Parent = aimTabButton
+
+local whTabButton = Instance.new("TextButton")
+whTabButton.Size = UDim2.new(0.25, -5, 1, 0)
+whTabButton.Position = UDim2.new(0.25, 5, 0, 0)
+whTabButton.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+whTabButton.Text = "ВХ"
+whTabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+whTabButton.TextSize = 18
+whTabButton.Font = Enum.Font.SourceSans
+whTabButton.Parent = tabsFrame
+
+local whTabCorner = Instance.new("UICorner")
+whTabCorner.CornerRadius = UDim.new(0, 6)
+whTabCorner.Parent = whTabButton
+
+local generalTabButton = Instance.new("TextButton")
+generalTabButton.Size = UDim2.new(0.25, -5, 1, 0)
+generalTabButton.Position = UDim2.new(0.5, 10, 0, 0)
+generalTabButton.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+generalTabButton.Text = "Общие"
+generalTabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+generalTabButton.TextSize = 18
+generalTabButton.Font = Enum.Font.SourceSans
+generalTabButton.Parent = tabsFrame
+
+local generalTabCorner = Instance.new("UICorner")
+generalTabCorner.CornerRadius = UDim.new(0, 6)
+generalTabCorner.Parent = generalTabButton
+
+local otherTabButton = Instance.new("TextButton")
+otherTabButton.Size = UDim2.new(0.25, -5, 1, 0)
+otherTabButton.Position = UDim2.new(0.75, 15, 0, 0)
+otherTabButton.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+otherTabButton.Text = "Другое"
+otherTabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+otherTabButton.TextSize = 18
+otherTabButton.Font = Enum.Font.SourceSans
+otherTabButton.Parent = tabsFrame
+
+local otherTabCorner = Instance.new("UICorner")
+otherTabCorner.CornerRadius = UDim.new(0, 6)
+otherTabCorner.Parent = otherTabButton
+
+local aimTab = Instance.new("Frame")
+aimTab.Size = UDim2.new(1, -20, 0, 430)
+aimTab.Position = UDim2.new(0, 10, 0, 110)
+aimTab.BackgroundTransparency = 1
+aimTab.Parent = frame
+aimTab.Visible = true
+
+local whTab = Instance.new("Frame")
+whTab.Size = UDim2.new(1, -20, 0, 430)
+whTab.Position = UDim2.new(0, 10, 0, 110)
+whTab.BackgroundTransparency = 1
+whTab.Parent = frame
+whTab.Visible = false
+
+local generalTab = Instance.new("Frame")
+generalTab.Size = UDim2.new(1, -20, 0, 430)
+generalTab.Position = UDim2.new(0, 10, 0, 110)
+generalTab.BackgroundTransparency = 1
+generalTab.Parent = frame
+generalTab.Visible = false
+
+local otherTab = Instance.new("Frame")
+otherTab.Size = UDim2.new(1, -20, 0, 430)
+otherTab.Position = UDim2.new(0, 10, 0, 110)
+otherTab.BackgroundTransparency = 1
+otherTab.Parent = frame
+otherTab.Visible = false
+
+local aimbotButton = Instance.new("TextButton")
+aimbotButton.Size = UDim2.new(0, 310, 0, 50)
+aimbotButton.Position = UDim2.new(0.5, -155, 0, 10)
+aimbotButton.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+aimbotButton.Text = "Aimbot: OFF"
+aimbotButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+aimbotButton.TextSize = 20
+aimbotButton.Font = Enum.Font.SourceSans
+aimbotButton.Parent = aimTab
+
+local aimbotButtonCorner = Instance.new("UICorner")
+aimbotButtonCorner.CornerRadius = UDim.new(0, 8)
+aimbotButtonCorner.Parent = aimbotButton
+
+local aimbotStroke = Instance.new("UIStroke")
+aimbotStroke.Color = Color3.fromRGB(0, 255, 255)
+aimbotStroke.Thickness = 2
+aimbotStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+aimbotStroke.Parent = aimbotButton
+
+local aimModeButton = Instance.new("TextButton")
+aimModeButton.Size = UDim2.new(0, 310, 0, 50)
+aimModeButton.Position = UDim2.new(0.5, -155, 0, 70)
+aimModeButton.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+aimModeButton.Text = "Mode: Legit"
+aimModeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+aimModeButton.TextSize = 20
+aimModeButton.Font = Enum.Font.SourceSans
+aimModeButton.Parent = aimTab
+
+local aimModeButtonCorner = Instance.new("UICorner")
+aimModeButtonCorner.CornerRadius = UDim.new(0, 8)
+aimModeButtonCorner.Parent = aimModeButton
+
+local aimModeStroke = Instance.new("UIStroke")
+aimModeStroke.Color = Color3.fromRGB(0, 255, 255)
+aimModeStroke.Thickness = 2
+aimModeStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+aimModeStroke.Parent = aimModeButton
+
+local visibilityButton = Instance.new("TextButton")
+visibilityButton.Size = UDim2.new(0, 310, 0, 50)
+visibilityButton.Position = UDim2.new(0, 45, 0, 130)
+visibilityButton.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+visibilityButton.Text = "Visibility Check: ON"
+visibilityButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+visibilityButton.TextSize = 20
+visibilityButton.Font = Enum.Font.SourceSans
+visibilityButton.Parent = aimTab
+
+local visibilityButtonCorner = Instance.new("UICorner")
+visibilityButtonCorner.CornerRadius = UDim.new(0, 8)
+visibilityButtonCorner.Parent = visibilityButton
+
+local visibilityStroke = Instance.new("UIStroke")
+visibilityStroke.Color = Color3.fromRGB(0, 255, 255)
+visibilityStroke.Thickness = 2
+visibilityStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+visibilityStroke.Parent = visibilityButton
+
+local fovLabel = Instance.new("TextLabel")
+fovLabel.Size = UDim2.new(0, 150, 0, 30)
+fovLabel.Position = UDim2.new(0, 20, 0, 190)
+fovLabel.BackgroundTransparency = 1
+fovLabel.Text = "FOV Radius:"
+fovLabel.TextColor3 = Color3.fromRGB(0, 255, 255)
+fovLabel.TextSize = 18
+fovLabel.Font = Enum.Font.SourceSans
+fovLabel.Parent = aimTab
+
+local fovInput = Instance.new("TextBox")
+fovInput.Size = UDim2.new(0, 140, 0, 30)
+fovInput.Position = UDim2.new(0, 190, 0, 190)
+fovInput.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+fovInput.Text = "500"
+fovInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+fovInput.TextSize = 18
+fovInput.Font = Enum.Font.SourceSans
+fovInput.Parent = aimTab
+
+local fovInputCorner = Instance.new("UICorner")
+fovInputCorner.CornerRadius = UDim.new(0, 6)
+fovInputCorner.Parent = fovInput
+
+local smoothLabel = Instance.new("TextLabel")
+smoothLabel.Size = UDim2.new(0, 150, 0, 30)
+smoothLabel.Position = UDim2.new(0, 20, 0, 240)
+smoothLabel.BackgroundTransparency = 1
+smoothLabel.Text = "Smoothness:"
+smoothLabel.TextColor3 = Color3.fromRGB(0, 255, 255)
+smoothLabel.TextSize = 18
+smoothLabel.Font = Enum.Font.SourceSans
+smoothLabel.Parent = aimTab
+
+local smoothInput = Instance.new("TextBox")
+smoothInput.Size = UDim2.new(0, 140, 0, 30)
+smoothInput.Position = UDim2.new(0, 190, 0, 240)
+smoothInput.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+smoothInput.Text = "0.5"
+smoothInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+smoothInput.TextSize = 18
+smoothInput.Font = Enum.Font.SourceSans
+smoothInput.Parent = aimTab
+
+local smoothInputCorner = Instance.new("UICorner")
+smoothInputCorner.CornerRadius = UDim.new(0, 6)
+smoothInputCorner.Parent = smoothInput
+
+local espButton = Instance.new("TextButton")
+espButton.Size = UDim2.new(0, 310, 0, 50)
+espButton.Position = UDim2.new(0.5, -155, 0, 10)
+espButton.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+espButton.Text = "ESP: OFF"
+espButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+espButton.TextSize = 20
+espButton.Font = Enum.Font.SourceSans
+espButton.Parent = whTab
+
+local espButtonCorner = Instance.new("UICorner")
+espButtonCorner.CornerRadius = UDim.new(0, 8)
+espButtonCorner.Parent = espButton
+
+local espStroke = Instance.new("UIStroke")
+espStroke.Color = Color3.fromRGB(0, 255, 255)
+espStroke.Thickness = 2
+espStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+espStroke.Parent = espButton
+
+local speedButton = Instance.new("TextButton")
+speedButton.Size = UDim2.new(0, 310, 0, 50)
+speedButton.Position = UDim2.new(0.5, -155, 0, 10)
+speedButton.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+speedButton.Text = "Speed: OFF"
+speedButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+speedButton.TextSize = 20
+speedButton.Font = Enum.Font.SourceSans
+speedButton.Parent = generalTab
+
+local speedButtonCorner = Instance.new("UICorner")
+speedButtonCorner.CornerRadius = UDim.new(0, 8)
+speedButtonCorner.Parent = speedButton
+
+local speedStroke = Instance.new("UIStroke")
+speedStroke.Color = Color3.fromRGB(0, 255, 255)
+speedStroke.Thickness = 2
+speedStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+speedStroke.Parent = speedButton
+
+local bunnyHopButton = Instance.new("TextButton")
+bunnyHopButton.Size = UDim2.new(0, 310, 0, 50)
+bunnyHopButton.Position = UDim2.new(0.5, -155, 0, 70)
+bunnyHopButton.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+bunnyHopButton.Text = "Bunny Hop: OFF"
+bunnyHopButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+bunnyHopButton.TextSize = 20
+bunnyHopButton.Font = Enum.Font.SourceSans
+bunnyHopButton.Parent = generalTab
+
+local bunnyHopButtonCorner = Instance.new("UICorner")
+bunnyHopButtonCorner.CornerRadius = UDim.new(0, 8)
+bunnyHopButtonCorner.Parent = bunnyHopButton
+
+local bunnyHopStroke = Instance.new("UIStroke")
+bunnyHopStroke.Color = Color3.fromRGB(0, 255, 255)
+bunnyHopStroke.Thickness = 2
+bunnyHopStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+bunnyHopStroke.Parent = bunnyHopButton
+
+local noClipButton = Instance.new("TextButton")
+noClipButton.Size = UDim2.new(0, 310, 0, 50)
+noClipButton.Position = UDim2.new(0.5, -155, 0, 10)
+noClipButton.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+noClipButton.Text = "NoClip: OFF"
+noClipButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+noClipButton.TextSize = 20
+noClipButton.Font = Enum.Font.SourceSans
+noClipButton.Parent = otherTab
+
+local noClipButtonCorner = Instance.new("UICorner")
+noClipButtonCorner.CornerRadius = UDim.new(0, 8)
+noClipButtonCorner.Parent = noClipButton
+
+local noClipStroke = Instance.new("UIStroke")
+noClipStroke.Color = Color3.fromRGB(0, 255, 255)
+noClipStroke.Thickness = 2
+noClipStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+noClipStroke.Parent = noClipButton
+
+local flyButton = Instance.new("TextButton")
+flyButton.Size = UDim2.new(0, 310, 0, 50)
+flyButton.Position = UDim2.new(0.5, -155, 0, 70)
+flyButton.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+flyButton.Text = "Fly: OFF"
+flyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+flyButton.TextSize = 20
+flyButton.Font = Enum.Font.SourceSans
+flyButton.Parent = otherTab
+
+local flyButtonCorner = Instance.new("UICorner")
+flyButtonCorner.CornerRadius = UDim.new(0, 8)
+flyButtonCorner.Parent = flyButton
+
+local flyStroke = Instance.new("UIStroke")
+flyStroke.Color = Color3.fromRGB(0, 255, 255)
+flyStroke.Thickness = 2
+flyStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+flyStroke.Parent = flyButton
+
+local killAuraButton = Instance.new("TextButton")
+killAuraButton.Size = UDim2.new(0, 310, 0, 50)
+killAuraButton.Position = UDim2.new(0.5, -155, 0, 130)
+killAuraButton.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+killAuraButton.Text = "Kill Aura: OFF"
+killAuraButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+killAuraButton.TextSize = 20
+killAuraButton.Font = Enum.Font.SourceSans
+killAuraButton.Parent = otherTab
+
+local killAuraButtonCorner = Instance.new("UICorner")
+killAuraButtonCorner.CornerRadius = UDim.new(0, 8)
+killAuraButtonCorner.Parent = killAuraButton
+
+local killAuraStroke = Instance.new("UIStroke")
+killAuraStroke.Color = Color3.fromRGB(0, 255, 255)
+killAuraStroke.Thickness = 2
+killAuraStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+killAuraStroke.Parent = killAuraButton
+
+local fovCircle = Instance.new("Frame")
+fovCircle.Size = UDim2.new(0, 500, 0, 500)
+fovCircle.Position = UDim2.new(0.5, 0, 0.5, 0)
+fovCircle.AnchorPoint = Vector2.new(0.5, 0.5)
+fovCircle.BackgroundColor3 = Color3.fromRGB(0, 255, 255)
+fovCircle.BackgroundTransparency = 0.9
+fovCircle.BorderSizePixel = 0
+fovCircle.Parent = screenGui
+fovCircle.Visible = false
+
+local fovCircleCorner = Instance.new("UICorner")
+fovCircleCorner.CornerRadius = UDim.new(1, 0)
+fovCircleCorner.Parent = fovCircle
+
+local fovStroke = Instance.new("UIStroke")
+fovStroke.Color = Color3.fromRGB(0, 255, 255)
+fovStroke.Thickness = 2
+fovStroke.Transparency = 0.5
+fovStroke.Parent = fovCircle
+
+local dragging = false
+local dragStart = nil
+local startPos = nil
+
+frame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = frame.Position
+    end
+end)
+
+frame.InputChanged:Connect(function(input)
+    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        local delta = input.Position - dragStart
+        frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+
+frame.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = false
+    end
+end)
+
+closeButton.MouseButton1Click:Connect(function()
+    screenGui.Enabled = false
+end)
+
+minimizeButton.MouseButton1Click:Connect(function()
+    frame.Visible = false
+    openButton.Visible = true
+    print("GUI minimized")
+end)
+
+openButton.MouseButton1Click:Connect(function()
+    frame.Visible = true
+    openButton.Visible = false
+    print("GUI opened")
+end)
+
+local function showTab(tab)
+    aimTab.Visible = tab == aimTab
+    whTab.Visible = tab == whTab
+    generalTab.Visible = tab == generalTab
+    otherTab.Visible = tab == otherTab
+    aimTabButton.BackgroundColor3 = tab == aimTab and Color3.fromRGB(0, 255, 120) or Color3.fromRGB(0, 120, 255)
+    whTabButton.BackgroundColor3 = tab == whTab and Color3.fromRGB(0, 255, 120) or Color3.fromRGB(0, 120, 255)
+    generalTabButton.BackgroundColor3 = tab == generalTab and Color3.fromRGB(0, 255, 120) or Color3.fromRGB(0, 120, 255)
+    otherTabButton.BackgroundColor3 = tab == otherTab and Color3.fromRGB(0, 255, 120) or Color3.fromRGB(0, 120, 255)
+end
+
+aimTabButton.MouseButton1Click:Connect(function() showTab(aimTab) end)
+whTabButton.MouseButton1Click:Connect(function() showTab(whTab) end)
+generalTabButton.MouseButton1Click:Connect(function() showTab(generalTab) end)
+otherTabButton.MouseButton1Click:Connect(function() showTab(otherTab) end)
+
+local espEnabled = false
+local espElements = {}
+local aimbotEnabled = false
+local visibilityCheck = true
+local fovRadius = 500
+local smoothness = 0.5
+local isAiming = false
+local aimMode = "Legit"
+local bunnyHopEnabled = false
+local noClipEnabled = false
+local flyEnabled = false
+local killAuraEnabled = false
+
+fovInput.FocusLost:Connect(function()
+    local value = tonumber(fovInput.Text)
+    if value and value > 0 then
+        fovRadius = value
+        fovCircle.Size = UDim2.new(0, fovRadius * 2, 0, fovRadius * 2)
+        print("FOV: " .. fovRadius)
+    else
+        fovInput.Text = tostring(fovRadius)
+    end
+end)
+
+smoothInput.FocusLost:Connect(function()
+    local value = tonumber(smoothInput.Text)
+    if value and value >= 0 then
+        smoothness = value
+        print("Smoothness: " .. smoothness)
+    else
+        smoothInput.Text = tostring(smoothness)
+    end
+end)
+
+local function updateAimMode(mode)
+    aimMode = mode
+    aimModeButton.Text = "Mode: " .. mode
+    if mode == "Legit" then
+        smoothness = 0.5
+        fovRadius = 500
+        visibilityCheck = true
+        smoothInput.Text = "0.5"
+        fovInput.Text = "500"
+        visibilityButton.Text = "Visibility Check: ON"
+        visibilityButton.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+        fovCircle.Size = UDim2.new(0, 500 * 2, 0, 500 * 2)
+    else
+        smoothness = 0.1
+        fovRadius = 1000
+        visibilityCheck = false
+        smoothInput.Text = "0.1"
+        fovInput.Text = "1000"
+        visibilityButton.Text = "Visibility Check: OFF"
+        visibilityButton.BackgroundColor3 = Color3.fromRGB(0, 255, 120)
+        fovCircle.Size = UDim2.new(0, 1000 * 2, 0, 1000 * 2)
+    end
+    print("Aim Mode: " .. mode)
+end
+
+aimModeButton.MouseButton1Click:Connect(function()
+    updateAimMode(aimMode == "Legit" and "Rage" or "Legit")
+end)
+
+local function createEsp(targetPlayer)
+    if targetPlayer ~= player and targetPlayer.Character then
+        local character = targetPlayer.Character
+        local head = character:FindFirstChild("Head")
+        local humanoid = character:FindFirstChild("Humanoid")
+        if head and humanoid and humanoid.Health > 0 then
+            local billboard = Instance.new("BillboardGui")
+            billboard.Adornee = head
+            billboard.Size = UDim2.new(0, 100, 0, 50)
+            billboard.StudsOffset = Vector3.new(0, 2, 0)
+            billboard.AlwaysOnTop = true
+            billboard.Parent = head
+
+            local nameLabel = Instance.new("TextLabel")
+            nameLabel.Size = UDim2.new(1, 0, 1, 0)
+            nameLabel.BackgroundTransparency = 1
+            nameLabel.Text = targetPlayer.Name
+            nameLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+            nameLabel.TextSize = 14
+            nameLabel.Font = Enum.Font.SourceSansBold
+            nameLabel.Parent = billboard
+
+            local highlight = Instance.new("Highlight")
+            highlight.Adornee = character
+            highlight.FillColor = Color3.fromRGB(255, 0, 0)
+            highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+            highlight.FillTransparency = 0.5
+            highlight.OutlineTransparency = 0
+            highlight.Parent = character
+
+            espElements[targetPlayer] = {billboard = billboard, highlight = highlight}
+            print("ESP created for: " .. targetPlayer.Name)
+        end
+    end
+end
+
+local function removeEsp(targetPlayer)
+    if espElements[targetPlayer] then
+        if espElements[targetPlayer].billboard then
+            espElements[targetPlayer].billboard:Destroy()
+        end
+        if espElements[targetPlayer].highlight then
+            espElements[targetPlayer].highlight:Destroy()
+        end
+        espElements[targetPlayer] = nil
+        print("ESP removed for: " .. targetPlayer.Name)
+    end
+end
+
+local function updateEsp()
+    if espEnabled then
+        for _, targetPlayer in pairs(Players:GetPlayers()) do
+            if targetPlayer ~= player and targetPlayer.Character then
+                local humanoid = targetPlayer.Character:FindFirstChild("Humanoid")
+                if humanoid and humanoid.Health > 0 then
+                    if not espElements[targetPlayer] then
+                        createEsp(targetPlayer)
+                    end
+                else
+                    removeEsp(targetPlayer)
+                end
+            end
+        end
+        for targetPlayer, _ in pairs(espElements) do
+            if not targetPlayer.Character or not targetPlayer.Character:FindFirstChild("Humanoid") or targetPlayer.Character.Humanoid.Health <= 0 then
+                removeEsp(targetPlayer)
+            end
+        end
+    else
+        for targetPlayer, _ in pairs(espElements) do
+            removeEsp(targetPlayer)
+        end
+    end
+end
+
+spawn(function()
+    while true do
+        if espEnabled then
+            updateEsp()
+        end
+        wait(1)
+    end
+end)
+
+local function isVisible(targetPlayer, targetPart)
+    if not visibilityCheck then
+        return true
+    end
+    if not player.Character or not player.Character:FindFirstChild("Head") then
+        print("Player has no character")
+        return false
+    end
+    if not targetPlayer.Character or not targetPlayer.Character:FindFirstChild(targetPart) then
+        print("Target has no " .. targetPart .. ": " .. targetPlayer.Name)
+        return false
+    end
+    local part = targetPlayer.Character[targetPart]
+    local rayOrigin = camera.CFrame.Position
+    local rayDirection = (part.Position - rayOrigin).Unit * (part.Position - rayOrigin).Magnitude
+    local raycastParams = RaycastParams.new()
+    raycastParams.FilterDescendantsInstances = {player.Character}
+    raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+    local raycastResult = workspace:Raycast(rayOrigin, rayDirection, raycastParams)
+    local visible = not raycastResult or raycastResult.Instance:IsDescendantOf(targetPlayer.Character)
+    if not visible then
+        print("Player not visible (" .. targetPart .. "): " .. targetPlayer.Name)
+    end
+    return visible
+end
+
+local function getClosestPlayer()
+    if not camera then
+        print("Camera not found")
+        return nil, nil
+    end
+    local closestPlayer = nil
+    local closestDistance = fovRadius
+    local closestPart = nil
+    local mousePos = UserInputService:GetMouseLocation()
+
+    for _, targetPlayer in pairs(Players:GetPlayers()) do
+        if targetPlayer ~= player and targetPlayer.Character and targetPlayer.Character:FindFirstChild("Head") and targetPlayer.Character:FindFirstChild("HumanoidRootPart") and targetPlayer.Character:FindFirstChild("Humanoid") then
+            local humanoid = targetPlayer.Character.Humanoid
+            if humanoid.Health > 0 then
+                local parts = {
+                    {name = "Head", part = targetPlayer.Character.Head},
+                    {name = "HumanoidRootPart", part = targetPlayer.Character.HumanoidRootPart}
+                }
+                for _, partInfo in pairs(parts) do
+                    local screenPos, onScreen = camera:WorldToViewportPoint(partInfo.part.Position)
+                    if onScreen then
+                        local distance = (Vector2.new(screenPos.X, screenPos.Y) - Vector2.new(mousePos.X, mousePos.Y)).Magnitude
+                        if distance < closestDistance and (not visibilityCheck or isVisible(targetPlayer, partInfo.name)) then
+                            closestDistance = distance
+                            closestPlayer = targetPlayer
+                            closestPart = partInfo.name
+                            print("Target found: " .. targetPlayer.Name .. ", part: " .. partInfo.name .. ", distance: " .. distance)
+                        end
+                    else
+                        print("Player not on screen (" .. partInfo.name .. "): " .. targetPlayer.Name)
+                    end
+                end
+            else
+                print("Player is dead: " .. targetPlayer.Name)
+            end
+        end
+    end
+
+    if not closestPlayer then
+        print("No target found in FOV")
+    end
+    return closestPlayer, closestPart
+end
+
+local function aimAt(target, partName)
+    if not camera then
+        print("Camera not available")
+        return
+    end
+    if target and target.Character and target.Character:FindFirstChild(partName) then
+        local partPos = target.Character[partName].Position
+        local currentCamCFrame = camera.CFrame
+        local targetCFrame = CFrame.new(currentCamCFrame.Position, partPos)
+        camera.CFrame = currentCamCFrame:Lerp(targetCFrame, 1 - smoothness)
+        print("Aiming at " .. partName .. ": " .. target.Name)
+    else
+        print("Target not available")
+    end
+end
+
+local function toggleSpeed()
+    if player.Character and player.Character:FindFirstChild("Humanoid") then
+        local humanoid = player.Character.Humanoid
+        if speedButton.Text == "Speed: OFF" then
+            humanoid.WalkSpeed = 50
+            speedButton.Text = "Speed: ON"
+            speedButton.BackgroundColor3 = Color3.fromRGB(0, 255, 120)
+            print("Speed ON: 50")
+        else
+            humanoid.WalkSpeed = 16
+            speedButton.Text = "Speed: OFF"
+            speedButton.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+            print("Speed OFF: 16")
+        end
+    else
+        print("Character not found for speed")
+    end
+end
+
+local function toggleBunnyHop()
+    bunnyHopEnabled = not bunnyHopEnabled
+    bunnyHopButton.Text = "Bunny Hop: " .. (bunnyHopEnabled and "ON" or "OFF")
+    bunnyHopButton.BackgroundColor3 = bunnyHopEnabled and Color3.fromRGB(0, 255, 120) or Color3.fromRGB(0, 120, 255)
+    print("Bunny Hop: " .. (bunnyHopEnabled and "ON" or "OFF"))
+end
+
+local function toggleNoClip()
+    noClipEnabled = not noClipEnabled
+    noClipButton.Text = "NoClip: " .. (noClipEnabled and "ON" or "OFF")
+    noClipButton.BackgroundColor3 = noClipEnabled and Color3.fromRGB(0, 255, 120) or Color3.fromRGB(0, 120, 255)
+    print("NoClip: " .. (noClipEnabled and "ON" or "OFF"))
+end
+
+local function toggleFly()
+    flyEnabled = not flyEnabled
+    flyButton.Text = "Fly: " .. (flyEnabled and "ON" or "OFF")
+    flyButton.BackgroundColor3 = flyEnabled and Color3.fromRGB(0, 255, 120) or Color3.fromRGB(0, 120, 255)
+    if not flyEnabled then
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local rootPart = player.Character.HumanoidRootPart
+            rootPart.Anchored = false
+        end
+    end
+    print("Fly: " .. (flyEnabled and "ON" or "OFF"))
+end
+
+local function toggleKillAura()
+    killAuraEnabled = not killAuraEnabled
+    killAuraButton.Text = "Kill Aura: " .. (killAuraEnabled and "ON" or "OFF")
+    killAuraButton.BackgroundColor3 = killAuraEnabled and Color3.fromRGB(0, 255, 120) or Color3.fromRGB(0, 120, 255)
+    print("Kill Aura: " .. (killAuraEnabled and "ON" or "OFF"))
+end
+
+espButton.MouseButton1Click:Connect(function()
+    espEnabled = not espEnabled
+    espButton.Text = "ESP: " .. (espEnabled and "ON" or "OFF")
+    espButton.BackgroundColor3 = espEnabled and Color3.fromRGB(0, 255, 120) or Color3.fromRGB(0, 120, 255)
+    updateEsp()
+    print("ESP: " .. (espEnabled and "ON" or "OFF"))
+end)
+
+aimbotButton.MouseButton1Click:Connect(function()
+    aimbotEnabled = not aimbotEnabled
+    aimbotButton.Text = "Aimbot: " .. (aimbotEnabled and "ON" or "OFF")
+    aimbotButton.BackgroundColor3 = aimbotEnabled and Color3.fromRGB(0, 255, 120) or Color3.fromRGB(0, 120, 255)
+    if not aimbotEnabled then
+        fovCircle.Visible = false
+        isAiming = false
+        fovStroke.Color = Color3.fromRGB(0, 255, 255)
+    end
+    print("Aimbot: " .. (aimbotEnabled and "ON" or "OFF"))
+end)
+
+visibilityButton.MouseButton1Click:Connect(function()
+    visibilityCheck = not visibilityCheck
+    visibilityButton.Text = "Visibility Check: " .. (visibilityCheck and "ON" or "OFF")
+    visibilityButton.BackgroundColor3 = visibilityCheck and Color3.fromRGB(0, 120, 255) or Color3.fromRGB(0, 255, 120)
+    print("Visibility Check: " .. (visibilityCheck and "ON" or "OFF"))
+end)
+
+speedButton.MouseButton1Click:Connect(toggleSpeed)
+bunnyHopButton.MouseButton1Click:Connect(toggleBunnyHop)
+noClipButton.MouseButton1Click:Connect(toggleNoClip)
+flyButton.MouseButton1Click:Connect(toggleFly)
+killAuraButton.MouseButton1Click:Connect(toggleKillAura)
+
+UserInputService.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton2 and aimbotEnabled then
+        isAiming = true
+        fovCircle.Visible = true
+        fovStroke.Color = Color3.fromRGB(255, 0, 0)
+        print("RMB pressed, Aimbot active")
+    elseif input.KeyCode == Enum.KeyCode.Space and bunnyHopEnabled then
+        if player.Character and player.Character:FindFirstChild("Humanoid") then
+            local humanoid = player.Character.Humanoid
+            if humanoid.FloorMaterial ~= Enum.Material.Air then
+                humanoid.Jump = true
+                print("Bunny Hop: Jump")
+            end
+        end
+    end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton2 and aimbotEnabled then
+        isAiming = false
+        fovCircle.Visible = aimbotEnabled
+        fovStroke.Color = Color3.fromRGB(0, 255, 255)
+        print("RMB released, Aimbot inactive")
+    end
+end)
+
+Players.PlayerAdded:Connect(function(newPlayer)
+    if espEnabled then
+        newPlayer.CharacterAdded:Connect(function()
+            createEsp(newPlayer)
+        end)
+    end
+end)
+
+Players.PlayerRemoving:Connect(function(leavingPlayer)
+    removeEsp(leavingPlayer)
+end)
+
+RunService.Stepped:Connect(function()
+    if noClipEnabled and player.Character then
+        for _, part in pairs(player.Character:GetDescendants()) do
+            if part:IsA("BasePart") then
+                part.CanCollide = false
+            end
+        end
+    end
+end)
+
+RunService.RenderStepped:Connect(function()
+    if not player.Character or not camera then
+        print("Character or camera not found")
+        return
+    end
+    if aimbotEnabled and isAiming then
+        local closestPlayer, closestPart = getClosestPlayer()
+        if closestPlayer and closestPart then
+            aimAt(closestPlayer, closestPart)
+        end
+    end
+    if flyEnabled and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        local rootPart = player.Character.HumanoidRootPart
+        local humanoid = player.Character.Humanoid
+        rootPart.Anchored = false
+        local moveDirection = Vector3.new(0, 0, 0)
+        if UserInputService:IsKeyDown(Enum.KeyCode.W) then
+            moveDirection = moveDirection + camera.CFrame.LookVector
+        end
+        if UserInputService:IsKeyDown(Enum.KeyCode.S) then
+            moveDirection = moveDirection - camera.CFrame.LookVector
+        end
+        if UserInputService:IsKeyDown(Enum.KeyCode.A) then
+            moveDirection = moveDirection - camera.CFrame.RightVector
+        end
+        if UserInputService:IsKeyDown(Enum.KeyCode.D) then
+            moveDirection = moveDirection + camera.CFrame.RightVector
+        end
+        if UserInputService:IsKeyDown(Enum.KeyCode.Space) then
+            moveDirection = moveDirection + Vector3.new(0, 1, 0)
+        end
+        if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then
+            moveDirection = moveDirection - Vector3.new(0, 1, 0)
+        end
+        if moveDirection.Magnitude > 0 then
+            rootPart.Velocity = moveDirection.Unit * 50
+        else
+            rootPart.Velocity = Vector3.new(0, 0, 0)
+            rootPart.Anchored = true
+        end
+        humanoid.PlatformStand = true
+    elseif player.Character and player.Character:FindFirstChild("Humanoid") then
+        player.Character.Humanoid.PlatformStand = false
+    end
+    if killAuraEnabled and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        for _, targetPlayer in pairs(Players:GetPlayers()) do
+            if targetPlayer ~= player and targetPlayer.Character and targetPlayer.Character:FindFirstChild("Humanoid") and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                local distance = (player.Character.HumanoidRootPart.Position - targetPlayer.Character.HumanoidRootPart.Position).Magnitude
+                if distance <= 10 and targetPlayer.Character.Humanoid.Health > 0 then
+                    targetPlayer.Character.Humanoid:TakeDamage(10)
+                    print("Kill Aura: Damaged " .. targetPlayer.Name)
+                end
+            end
+        end
+    end
+end)
+
+for _, targetPlayer in pairs(Players:GetPlayers()) do
+    if targetPlayer ~= player and targetPlayer.Character then
+        createEsp(targetPlayer)
+    end
+end
